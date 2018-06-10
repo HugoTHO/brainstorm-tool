@@ -1,6 +1,6 @@
-package test;
+package test.java;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 class IdeaTest {
 
