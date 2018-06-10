@@ -34,13 +34,13 @@ public class SessionTest {
     ideas.add(new Idea(users.get(2), "Ideia 3 para teste"));
     ideas.add(new Idea(users.get(1), "Ideia 4 para teste"));
     
-    session = new Session(users.get(0), "Teste", 10);
+    session = new Session(users.get(0), "Teste", 3);
   }
 
   @Test
   public void creation() {
     // Quando a Sessão é criada
-    session = new Session(users.get(0), "Teste", 10);
+    session = new Session(users.get(0), "Teste", 3);
     
     // O proprietário deve ser o mesmo do que foi passado na sua criação (construtor)
     assertEquals(users.get(0), session.getOwner());

@@ -36,7 +36,7 @@ public class Session {
 
   public void addIdea(Idea idea) {
     if (phase == SessionPhase.BRAINSTORM && participants.contains(idea.getAuthor())) {
-      
+      idea.setSession(this);
       ideas.add(idea);
     }
   }
