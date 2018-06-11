@@ -44,9 +44,6 @@ public class IdeaTest {
     
     session.addIdea(ideas.get(0));
     session.addIdea(ideas.get(1));
-    
-    ideas.get(0).registerVote(users.get(1));
-    ideas.get(1).registerVote(users.get(2));
   }
 
   @Test

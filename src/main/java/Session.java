@@ -46,6 +46,18 @@ public class Session {
   }
   
   public Idea[] rankIdeas() {
+    if (phase == SessionPhase.RANKING) {
+      List<Idea> rankeredIdeas = new ArrayList<>();
+      ideas.forEach(idea -> {
+          if (idea.countVotes() != 0) {
+            rankeredIdeas.add(idea);
+          }
+      });
+      
+      rankeredIdeas.sort((a, b) -> b.countVotes() - a.countVotes());
+      
+      return rankeredIdeas.toArray(new Idea[rankeredIdeas.size()]);
+    }
     return new Idea[0];
   }
   

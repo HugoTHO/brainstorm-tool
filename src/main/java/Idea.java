@@ -28,19 +28,16 @@ public class Idea {
     
     boolean alreadyVoted = voters.contains(voter);
     
-    int voterCount = 0;
+    int votesCount = 0;
     Idea[] ideas = session.getIdeas();
     for(Idea idea : ideas) {
-      if (idea != this) {
-        User[] ideaVoters = idea.getVoters();
-        if (Arrays.asList(ideaVoters).contains(voter)) {
-          voterCount++;
-        }
+      if (idea != this && idea.voters.contains(voter)) {
+          votesCount++;
       }
     }
-    boolean onVotingLimit = (voterCount == session.getVotingLimit());
+    boolean reachedLimit = (votesCount == session.getVotingLimit());
     
-    if (isVotingPhase && isParticipant && !isAuthor && !alreadyVoted && !onVotingLimit) {
+    if (isVotingPhase && isParticipant && !isAuthor && !alreadyVoted && !reachedLimit) {
       voters.add(voter);
     }
   }
@@ -67,9 +64,5 @@ public class Idea {
 
   public void setSession(Session session) {
     this.session = session;
-  }
-  
-  private User[] getVoters() {
-    return voters.toArray(new User[voters.size()]);
   }
 }

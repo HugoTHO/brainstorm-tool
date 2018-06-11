@@ -79,7 +79,7 @@ public class SessionTest {
   public void addParticipant() {
     // Quando se tenta registrar um novo participante (usuário)
     // A lista de participantes é inalterada se a sessão não estiver na fase de acolhimento
-    session.nextPhase();
+    session.nextPhase(); // BRAINSTORM
     session.addParticipant(users.get(0));
     assertNotEquals(SessionPhase.WELCOME, session.getPhase());
     assertEquals(0, session.getParticipants().length);
@@ -124,8 +124,7 @@ public class SessionTest {
     assertEquals(0, session.getIdeas().length);
 
     // A lista de ideias é inalterada se o autor da ideia não for um dos participantes da sessão
-    session.nextPhase();
-    assertEquals(SessionPhase.BRAINSTORM, session.getPhase());
+    session.nextPhase(); // BRAINSTORM
     session.addIdea(ideas.get(1));
     assertEquals(0, session.getIdeas().length);
     
@@ -139,12 +138,49 @@ public class SessionTest {
   @Test
   public void rankIdeas() {
     
+    session.addParticipant(users.get(0));
+    session.addParticipant(users.get(1));
+    session.addParticipant(users.get(2));
+    session.addParticipant(users.get(3));
+    
+    session.nextPhase(); // BRAINSTORM
+    session.addIdea(ideas.get(0));
+    session.addIdea(ideas.get(1));
+    session.addIdea(ideas.get(2));
+    session.addIdea(ideas.get(3));
+    
+    session.nextPhase(); // VOTING
+    ideas.get(0).registerVote(users.get(1));
+    ideas.get(2).registerVote(users.get(1));
+    ideas.get(2).registerVote(users.get(3));
+    ideas.get(3).registerVote(users.get(2));
+    ideas.get(3).registerVote(users.get(3));
+    ideas.get(3).registerVote(users.get(0));
+    
     
     // Quando se consulta o ranking das ideias...
     // O ranqueamento não é efetuado se a sessão não estiver na fase de ranqueamento
+    assertNotEquals(SessionPhase.BRAINSTORM, session.getPhase());
     assertEquals(0, session.rankIdeas().length);
     
     // São retornadas apenas as ideias com pelo menos um voto em ordem decrescente de número de 
     // votos
+    session.nextPhase(); // RANKING
+    Idea[] expectedArray = {ideas.get(3), ideas.get(2), ideas.get(0)};
+    assertArrayEquals(expectedArray, session.rankIdeas());
+    
+    // Caso lista de ideia sem nenhum voto
+    session = new Session(users.get(0), "Teste", 3);
+    
+    session.addParticipant(users.get(0));
+    
+    session.nextPhase(); // BRAINSTORM
+    session.addIdea(new Idea(users.get(0), "Ideia para teste vazio"));
+    
+    session.nextPhase(); // VOTING
+    session.nextPhase(); // RANKING
+    expectedArray = new Idea[0];
+    assertArrayEquals(expectedArray, session.rankIdeas());
+    
   }
 }
