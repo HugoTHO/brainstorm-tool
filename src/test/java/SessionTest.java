@@ -14,12 +14,29 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+/**
+ * Classe de testes unitários para a classe Session.
+ * @author hugo
+ */
 public class SessionTest {
 
+  /**
+   * Lista de usuários para os testes
+   */
   List<User> users;
+  /**
+   * Lista de ideias para os testes
+   */
   List<Idea> ideas;
+  /**
+   * Objeto sessão para realização dos testes
+   */
   Session session;
 
+  /**
+   * Método de pré-configuração para os testes, neste cria-se e popula as listas de usuários e de
+   * ideias, assim como cria-se a sessão para teste.
+   */
   @Before
   public void setUp() {
     users = new ArrayList<>();
@@ -37,6 +54,11 @@ public class SessionTest {
     session = new Session(users.get(0), "Teste", 3);
   }
 
+  /**
+   * Testa para o construtor da Sessão, nele testa-se a correta configuração do objeto após sua
+   * construção: Deve ter um autor, estar na fase de acolhimento, e ter as lista de participantes e
+   * ideias vazias.
+   */
   @Test
   public void creation() {
     // Quando a Sessão é criada
@@ -55,6 +77,10 @@ public class SessionTest {
     assertEquals(0, session.getParticipants().length);
   }
   
+  /**
+   * Teste para a passagem de fase da sessão, que basicamente testa se o fluxo de fases está 
+   * funcionando como deve: Acolhimento -> Brainstorm -> Votação -> Ranqueamento.
+   */
   @Test
   public void nextPhase() {
     // Ao ir para a próxima fase
@@ -75,6 +101,10 @@ public class SessionTest {
     assertEquals(SessionPhase.RANKING, session.getPhase());
   }
   
+  /**
+   * Teste para adição de participantes, que testa as seguintes regras de negócio: A adição só pode
+   * ocorrer se a sessão estiver na fase de acolhimento, e o participante não já estiver na lista.
+   */
   @Test
   public void addParticipant() {
     // Quando se tenta registrar um novo participante (usuário)
@@ -97,6 +127,10 @@ public class SessionTest {
     assertEquals(2, session.getParticipants().length);
   }
   
+  /**
+   * Teste para remoção de participantes, que testa as seguintes regras de negócio: a remoção só 
+   * pode ocorrer se o participante estiver na lista.
+   */
   @Test
   public void remoreParticipant() {
     session.addParticipant(users.get(0));
@@ -113,6 +147,11 @@ public class SessionTest {
     assertEquals(0, session.getParticipants().length);
   }
 
+  /**
+   * Teste para a adição de ideias, nele testa-se as seguintes regras de negócio: a ideia só pode
+   * ser adicionada se a sessão estiver em fase de brainstorm e o autor deve ser participante da
+   * sessão.
+   */
   @Test
   public void addIdea() {
     session.addParticipant(users.get(0));
@@ -135,6 +174,11 @@ public class SessionTest {
     assertEquals(1, session.getIdeas().length);
   }
   
+  /**
+   * Teste para ranqueamento das ideias, nele testa-se as seguintes regras de negócio: A conferencia
+   * dos votos só pode ocorrer se a sessão estiver na fase de ranqueamento e a lista de ranqueamento
+   * deve estar ordenada e não conter ideias com nenhum voto.
+   */
   @Test
   public void rankIdeas() {
     

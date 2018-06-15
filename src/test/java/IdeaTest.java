@@ -14,12 +14,29 @@ import main.java.Session;
 import main.java.SessionPhase;
 import main.java.User;
 
+/**
+ * Classe de testes unitários para a classe Idea.
+ * @author hugo
+ */
 public class IdeaTest {
 
+  /**
+   * Lista de usuários para os testes
+   */
   List<User> users;
+  /**
+   * Lista de ideias para os testes de adição e remoção de votos
+   */
   List<Idea> ideas;
+  /**
+   * Objeto sessão para realização dos testes
+   */
   Session session;
 
+  /**
+   * Método de pré-configuração para os testes. Ele cria e popula a lista de usuários e de ideias,
+   * assim como cria a sessão para testes, adiciona os usuários e ideias a esta. 
+   */
   @Before
   public void setUp() {
     users = new ArrayList<>();
@@ -46,6 +63,10 @@ public class IdeaTest {
     session.addIdea(ideas.get(1));
   }
 
+  /**
+   * Métood de Teste para o construtor da classe Idea, nele testa-se a configuração correta de uma
+   * ideia após sua criação.
+   */
   @Test
   public void creation() {
     // Quando uma ideia é criada
@@ -58,6 +79,12 @@ public class IdeaTest {
     assertEquals(0, idea.countVotes().intValue());
   }
 
+  /**
+   * Método de teste para os registros de votos, nele testa-se as regras de negócio para o voto em
+   * uma ideia: A sessão deve estar em fase de votação, o votante deve participar da sessão, este
+   * também não pode ser o autor da ideia e não pode repetir o voto nem ter atingido o limites de 
+   * votos para a sessão.
+   */
   @Test
   public void registerVote() {
     // Quando se tenta votar em uma ideia...
@@ -92,6 +119,11 @@ public class IdeaTest {
     assertEquals(2, ideas.get(0).countVotes().intValue());
   }
   
+  /**
+   * Teste para a remoção de votos em uma ideia. Nele, testa-se as regras de negócio para remoção
+   * um voto: a sessão deve estar da fase de votação, e o voto só pode ser removido se ele
+   * devidamente existir.
+   */
   @Test
   public void removeVote() {
     // Quando se tenta remover o voto de uma ideia...

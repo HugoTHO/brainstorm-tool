@@ -1,5 +1,11 @@
 package main.java;
 
+/**
+ * Classe de enumeração para representar as fases da sessão.
+ * 
+ * @author hugo
+ *
+ */
 public enum SessionPhase {
 
   WELCOME {
@@ -26,7 +32,12 @@ public enum SessionPhase {
       return SessionPhase.RANKING;
     }
   };
-  
+
+  /**
+   * Método para obtenção da próxima fase.
+   * 
+   * @return Próxima fase.
+   */
   public SessionPhase next() {
     return null;
   }
